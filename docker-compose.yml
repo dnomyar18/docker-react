@@ -1,0 +1,27 @@
+version: '3'
+services: 
+  web-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+      args: 
+        - http_proxy=http://serverproxy.aon.net:8888/
+        - https_proxy=http://serverproxy.aon.net:8888/
+        - noProxy=10.241.2.82
+    ports: 
+      - "3000:3000"
+    volumes: 
+      - /app/node_modules
+      - .:/app
+  tests: 
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args: 
+        - http_proxy=http://serverproxy.aon.net:8888/
+        - https_proxy=http://serverproxy.aon.net:8888/
+        - noProxy=10.241.2.82
+    volumes: 
+      - /app/node_modules
+      - .:/app
+    command: ["yarn", "test"]
